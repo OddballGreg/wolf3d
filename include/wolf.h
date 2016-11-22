@@ -42,20 +42,21 @@ typedef struct			s_env
 }						t_env;
 
 /*wolf.c*/
-void    	init(t_env *env, char *filename);
-int			safe_exit(void *e);
-int			key_press(int key, void *e);
-int			key_release(int key, void *e);
 int			run(void *e);
-void		draw(t_env *e);
-void		put_pixel(t_env *env, int x, int y, unsigned int colour);
+
+/*game.c*/
 void		move(t_env *env);
 
-/*hooks.c*/
-void		ps_fw(void *env);
-void		ps_bw(void *env);
-void		ps_l(void *env);
-void		ps_r(void *env);
-void		ps_esc(void *env);
+/*datahandling.c*/
+void    	init(t_env *env, char *filename);
+int			safe_exit(void *e);
+
+/*keyhooks.c*/
+int			key_press(int key, void *e);
+int			key_release(int key, void *e);
+
+/*render.c*/
+void		draw(t_env *e);
+void		put_pixel(t_env *env, int x, int y, unsigned int colour);
 
 #endif

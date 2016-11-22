@@ -7,6 +7,11 @@ HEADER= -I libft -I include
 
 SP= ./srcs/
 SRC= $(SP)wolf.c\
+	 $(SP)render.c\
+	 $(SP)keyhooks.c\
+	 $(SP)datahandling.c\
+	 $(SP)game.c\
+
 
 all: $(NAME)
 
