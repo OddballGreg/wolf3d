@@ -3,11 +3,13 @@
 
 # include <libft.h>
 # include <fcntl.h>
+# include <math.h>
 # include <mlx.h>
 # include <stdio.h> //DEBUG PURPOSES ONLY
 
 
 # define FOV 45
+# define HFOV FOV / 2
 # define HEIGHT 600
 # define WIDTH 800
 
@@ -16,6 +18,9 @@
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
 # define KEY_ESC 53
+
+# define TORQUE 0.5
+# define VELOCITY 0.5
 
 typedef struct			s_players
 {
@@ -50,6 +55,7 @@ void		move(t_env *env);
 /*datahandling.c*/
 void    	init(t_env *env, char *filename);
 int			safe_exit(void *e);
+void		set_game(t_env *env);
 
 /*keyhooks.c*/
 int			key_press(int key, void *e);

@@ -3,9 +3,8 @@
 void			draw(t_env *env)
 {
 	int x = -1;
-	while (++x < WIDTH)
+	while (++x < WIDTH) //This loops is what produces the red line across the screen.
 		put_pixel(env, x, 12, 0xFF0000);
-	put_pixel(env, 13, 12, 0xFF0000);
 	mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
 }
 

@@ -6,13 +6,13 @@ int 			key_press(int key, void *e)
 
 	env = (t_env *)e;
 	if (key == KEY_UP)
-		env->player.v = 0.5;
+		env->player.v = VELOCITY;
 	else if (key == KEY_DOWN)
-		env->player.v = -0.5;
+		env->player.v = -VELOCITY;
 	else if (key == KEY_LEFT)
-		env->player.t = -0.5;
+		env->player.t = -TORQUE;
 	else if (key == KEY_RIGHT)
-		env->player.t = 0.5;
+		env->player.t = TORQUE;
 	else if (key == KEY_ESC)
 		safe_exit(e);
 	printf("x: %f, y: %f, dir: %f\n", env->player.x, env->player.y, env->player.dir);

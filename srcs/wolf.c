@@ -8,9 +8,7 @@ int				main(int argc, char **argv)
 		ft_puterror("Please pass a valid mapfile as an arguement.");
 	env.mlx = mlx_init();
 	init(&env, argv[1]);
-	env.player.x = 0; //Db
-	env.player.y = 0; //db
-	env.player.dir = 0; //db
+	set_game(&env);
 	mlx_do_key_autorepeatoff(env.mlx);
 	mlx_hook(env.win, 2, 1, &key_press, (void *)&env);
 	mlx_hook(env.win, 3, 2, &key_release, (void *)&env);

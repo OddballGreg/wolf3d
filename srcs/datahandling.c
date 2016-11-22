@@ -27,7 +27,17 @@ void			init(t_env *env, char *filename)
 	}
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Wolf3D");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
-	env->imgptr = mlx_get_data_addr(env->img, &env->bpp, &env->sl, &env->endian);
+}
+
+void        set_game(t_env *env)
+{
+    env->imgptr = mlx_get_data_addr(env->img, &env->bpp, &env->sl, &env->endian);
+    env->player.x = 0;
+	env->player.y = 0;
+	env->player.dir = 0;
+    env->player.v = 0;
+	env->player.t = 0;
+
 }
 
 int			safe_exit(void *e)
