@@ -32,9 +32,12 @@ void			init(t_env *env, char *filename)
 void        set_game(t_env *env)
 {
     env->imgptr = mlx_get_data_addr(env->img, &env->bpp, &env->sl, &env->endian);
-    env->player.x = 0;
-	env->player.y = 0;
-	env->player.dir = 0;
+    env->player.pos_x = 0;
+	env->player.pos_y = 0;
+	env->player.dir_x = 0;
+    env->player.dir_y = 0;
+	env->player.plane_x = 0;
+    env->player.plane_y = 0;
     env->player.v = 0;
 	env->player.t = 0;
 

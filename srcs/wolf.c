@@ -21,7 +21,7 @@ int				run(void *e)
 {
 	t_env	*env;
 
-	env = (t_env *)e;
+	env = (t_env *e);
 	move(env);
 	draw(env);
 	return (0);

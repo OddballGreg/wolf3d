@@ -22,13 +22,16 @@
 # define TORQUE 0.5
 # define VELOCITY 0.5
 
-typedef struct			s_players
+typedef struct			s_player
 {
-	float				x;
-	float				y;
-	float				dir;
-	float				v; //velocity
-	float				t; //torque
+    double				pos_x;
+	double				pos_y;
+	double				dir_x;
+	double				dir_y;
+	double				plane_x;
+	double				plane_y;
+	double				v; //velocity
+	double				t; //torque
 }						t_player;
 
 typedef struct			s_env
@@ -43,7 +46,7 @@ typedef struct			s_env
 	char				map[1024][1024];
 	int					maph;
 	int					mapw;
-	t_player			player;
+	s_player			player;
 }						t_env;
 
 /*wolf.c*/
