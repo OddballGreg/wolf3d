@@ -11,6 +11,7 @@ SRC= $(SP)wolf.c\
 	 $(SP)keyhooks.c\
 	 $(SP)datahandling.c\
 	 $(SP)game.c\
+	 $(SP)draw.c
 
 
 all: $(NAME)

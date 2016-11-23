@@ -12,64 +12,88 @@
 
 #include <wolf.h>
 
-void	draw(t_env *env)
+void	render(t_env *env)
 {
 	int x;
 
 	x = -1;
 	while (++x < WIDTH)
 	{
-		/*
-			Calculate direction of ray relative to position of player and camera coords
-		*/
-
-		CAMERA.pos_x = 2 * x / double(WIDTH) - 1;	//x-coord of camera at FOV(x)
-		RAY.pos_x = PLAYER.pos_x;
-		RAY.pos_y = PLAYER.pos_y;
-		RAY.dir_x = PLAYER.dir_x + PLAYER.plane_x * CAMERA.pos_x;
-		RAY.dir_y = PLAYER.dir_y + PLAYER.plane_y * CAMERA.pos_x;
-		
-
-		//which box of the map we're in
-		MAP.box_x = int(RAY.pos_x);
-		MAP.box_y = int(RAY.pos_y);
-
-		//length of ray from current position to next x or y-side
-
-
-		//length of ray from one x or y-side to next x or y-side
-		env->delta_dist_x = sqrt(1 + (RAY.dir_y * RAY.dir_y) / (rayDirX * rayDirX));
-		env->delta_dist_y = sqrt(1 + (rayDirX * rayDirX) / (RAY.dir_y* RAY.dir_y);
-		double perpWallDist;
-
-		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
-
-		int hit = 0; //was there a wall hit?
-		int side; //was a NS or a EW wall hit?
-		
+		transform_init(env);
+		transform_move(env);
+		transform_dda(env);
+		draw(env);
 		put_pixel(env, x, 12, 0xFF0000);
 	}
 	mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
 }
-
-void	put_pixel(t_env *env, int x, int y, unsigned int colour)
+void	transform_init(t_env *env)
 {
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
+	/*
+		Calculate direction of ray relative to position of player and camera coords
+	*/
 
-	r = (colour & 0xFF0000) >> 16;
-	g = (colour & 0x00FF00) >> 8;
-	b = (colour & 0x0000FF);
-	if (x >= 0 && x <= WIDTH && y >= 0 && y <= HEIGHT)
+	CAMERA.pos_x = 2 * x / double(WIDTH) - 1;	//x-coord of camera at FOV(x)
+	RAY.pos_x = PLAYER.pos_x;
+	RAY.pos_y = PLAYER.pos_y;
+	RAY.dir_x = PLAYER.dir_x + PLAYER.plane_x * CAMERA.pos_x;
+	RAY.dir_y = PLAYER.dir_y + PLAYER.plane_y * CAMERA.pos_x;
+	
+	//which box of the map we're in
+	PLAYER.box_x = int(RAY.pos_x);
+	PLAYER.box_y = int(RAY.pos_y);
+
+	//length of ray from one x or y-side to next x or y-side
+	env->delta_dist_x = sqrt(1 + (RAY.dir_y * RAY.dir_y) / (RAY.dir_x * RAY.dir_x));
+	env->delta_dist_y = sqrt(1 + (RAY.dir_x * RAY.dir_x) / (RAY.dir_y* RAY.dir_y);
+	
+	HIT = 0; //was there a wall hit?
+}
+
+void	transform_move(t_env *env)
+{
+	//calculate step and initial sideDist
+	if (RAY.dir_x < 0)
 	{
-		env->imgptr[((y * WIDTH * env->bpp) >> 3)
-			+ ((env->bpp >> 3) * x)] = b;
-		env->imgptr[((y * WIDTH * env->bpp) >> 3)
-			+ ((env->bpp >> 3) * x) + 1] = g;
-		env->imgptr[((y * WIDTH * env->bpp) >> 3)
-			+ ((env->bpp >> 3) * x) + 2] = r;
+		PLAYER.step_x = -1;
+		RAY.side_dist_x = (RAY.pos_x - PLAYER.box_x) *RAY.delta_dist_x;;
+	}
+	else
+	{
+		PLAYER.step_x = 1;
+		RAY.side_dist_x = (PLAYER.box_x + 1.0 - RAY.pos_x) *RAY.delta_dist_x;;
+	}
+	if (RAY.dir_y < 0)
+	{
+		PLAYER.step_y = -1;
+		RAY.side_dist_y = (RAY.pos_y - PLAYER.box_y) * RAY.delta_dist_y;
+	}
+	else
+	{
+		PLAYER.step_y = 1;
+		RAY.side_dist_y = (PLAYER.box_y + 1.0 - RAY.pos_y) * RAY.delta_dist_y;
+	}
+}
+		
+void	transform_dda(t_env *env)
+{		//perform DDA }
+	while (HIT == 0)
+	{
+		//jump to next map square, OR in x-direction, OR in y-direction
+		if (RAY.side_dist_x < RAY.side_dist_y)
+		{
+			RAY.side_dist_x +=RAY.delta_dist_x;;
+			PLAYER.box_x += PLAYER.step_x;
+			RAY.side = 0;
+		}
+		else
+		{
+			RAY.side_dist_y += RAY.delta_dist_y;
+			PLAYER.box_y += PLAYER.step_y;
+			RAY.side = 1;
+		}
+		//Check if ray has hit a wall
+		if (env->map[PLAYER.box_x][PLAYER.box_y] > 0)
+			HIT = 1;
 	}
 }

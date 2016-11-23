@@ -12,6 +12,7 @@
 # define MAP env->map
 # define CAMERA env->camera
 # define IMGPTR env->imgptr
+# define HIT env->ray.hit
 
 # define FOV 45
 # define HFOV FOV / 2
@@ -26,12 +27,6 @@
 
 # define TORQUE 0.5
 # define VELOCITY 0.5
-
-typedef struct          s_map
-{
-    int                 box_x;
-    int                 box_y;
-}                       t_map;
 
 typedef struct			s_camera
 {
@@ -48,17 +43,27 @@ typedef struct			s_ray
 	double              side_dist_y; //length of ray from current position to next y side
 	double              delta_dist_x; //opposite x of polygon
 	double              delta_dist_y; //opposite y of polygon
+	double				perp_wall_dist;
+	int					hit;
+	int					side;	//was a NS or a EW wall hit?
+	int					line_height;
+	int					draw_start;
+	int					draw_end;
 }                       t_ray;
 
 typedef struct			s_player
 {
     double				pos_x;
 	double				pos_y;
+    double				box_x;
+	double				box_y;
 	double				dir_x;
 	double				dir_y;
 	double				dir;
 	double				plane_x;
 	double				plane_y;
+	int					step_x;
+	int					step_y;
 	double				v; //velocity
 	double				t; //torque
 }						t_player;
@@ -97,7 +102,7 @@ int			key_press(int key, void *e);
 int			key_release(int key, void *e);
 
 /*render.c*/
-void		draw(t_env *e);
+void		render(t_env *e);
 void		put_pixel(t_env *env, int x, int y, unsigned int colour);
 
 #endif
