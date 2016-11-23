@@ -22,6 +22,19 @@
 # define TORQUE 0.5
 # define VELOCITY 0.5
 
+typedef struct			s_camera
+{
+    double				pos_x;
+}                       t_camera;
+
+typedef struct			s_ray
+{
+    double				pos_x;
+	double				pos_y;
+	double				dir_x;
+	double				dir_y;
+}                       t_ray;
+
 typedef struct			s_player
 {
     double				pos_x;
@@ -48,6 +61,8 @@ typedef struct			s_env
 	int					maph;
 	int					mapw;
 	t_player			player;
+    t_ray               ray;
+    t_camera            camera;
 }						t_env;
 
 /*wolf.c*/
