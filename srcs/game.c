@@ -1,23 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/23 15:39:40 by sallen            #+#    #+#             */
+/*   Updated: 2016/11/23 15:39:43 by sallen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <wolf.h>
 
 void			move(t_env *env)
 {
-	if (env->player.t > 0)
-		env->player.dir += TORQUE;
-	else if (env->player.t < 0)
-		env->player.dir -= TORQUE;
-	while (env->player.dir > 360)
-		env->player.dir -= 360;
-	while (env->player.dir < 0)
-		env->player.dir += 360;
-	if (env->player.v > 0)
+	if (PLAYER.t > 0)
+		PLAYER.dir += TORQUE;
+	else if (PLAYER.t < 0)
+		PLAYER.dir -= TORQUE;
+	while (PLAYER.dir > 360)
+		PLAYER.dir -= 360;
+	while (PLAYER.dir < 0)
+		PLAYER.dir += 360;
+	if (PLAYER.v > 0)
 	{
-		env->player.pos_y += VELOCITY * sin(env->player.dir);
-		env->player.pos_x += VELOCITY * cos(env->player.dir);
+		PLAYER.pos_y += VELOCITY * sin(PLAYER.dir);
+		PLAYER.pos_x += VELOCITY * cos(PLAYER.dir);
 	}
-	else if (env->player.v < 0)
+	else if (PLAYER.v < 0)
 	{
-		env->player.pos_y -= VELOCITY * sin(env->player.dir);
-		env->player.pos_x -= VELOCITY * cos(env->player.dir);
+		PLAYER.pos_y -= VELOCITY * sin(PLAYER.dir);
+		PLAYER.pos_x -= VELOCITY * cos(PLAYER.dir);
 	}
 }

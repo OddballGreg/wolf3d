@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/23 15:41:08 by sallen            #+#    #+#             */
+/*   Updated: 2016/11/23 15:41:10 by sallen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <wolf.h>
 
-int				main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_env		env;
 
@@ -17,7 +29,7 @@ int				main(int argc, char **argv)
 	mlx_loop(env.mlx);
 }
 
-int				run(void *e)
+int		run(void *e)
 {
 	t_env	*env;
 
@@ -26,4 +38,3 @@ int				run(void *e)
 	draw(env);
 	return (0);
 }
-

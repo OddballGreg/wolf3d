@@ -7,6 +7,11 @@
 # include <mlx.h>
 # include <stdio.h> //DEBUG PURPOSES ONLY
 
+# define RAY env->ray
+# define PLAYER env->player
+# define MAP env->map
+# define CAMERA env->camera
+# define IMGPTR env->imgptr
 
 # define FOV 45
 # define HFOV FOV / 2
@@ -22,6 +27,12 @@
 # define TORQUE 0.5
 # define VELOCITY 0.5
 
+typedef struct          s_map
+{
+    int                 box_x;
+    int                 box_y;
+}                       t_map;
+
 typedef struct			s_camera
 {
     double				pos_x;
@@ -33,6 +44,10 @@ typedef struct			s_ray
 	double				pos_y;
 	double				dir_x;
 	double				dir_y;
+	double              side_dist_x; //length of ray from current position to next x side
+	double              side_dist_y; //length of ray from current position to next y side
+	double              delta_dist_x; //opposite x of polygon
+	double              delta_dist_y; //opposite y of polygon
 }                       t_ray;
 
 typedef struct			s_player
@@ -63,6 +78,7 @@ typedef struct			s_env
 	t_player			player;
     t_ray               ray;
     t_camera            camera;
+    t_map               map;
 }						t_env;
 
 /*wolf.c*/
