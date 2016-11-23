@@ -18,8 +18,8 @@ void			init(t_env *env, char *filename)
 			env->map[env->maph][x] = line[x];
 			if (env->map[env->maph][x] == '*')
 			{
-				env->player.x = x;
-				env->player.y = env->maph;
+				env->player.pos_x = x;
+				env->player.pos_y = env->maph;
 			}
 			if (env->mapw < x)
 				env->mapw = x;

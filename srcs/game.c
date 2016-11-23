@@ -12,12 +12,12 @@ void			move(t_env *env)
 		env->player.dir += 360;
 	if (env->player.v > 0)
 	{
-		env->player.y += VELOCITY * sin(env->player.dir);
-		env->player.x += VELOCITY * cos(env->player.dir);
+		env->player.pos_y += VELOCITY * sin(env->player.dir);
+		env->player.pos_x += VELOCITY * cos(env->player.dir);
 	}
 	else if (env->player.v < 0)
 	{
-		env->player.y -= VELOCITY * sin(env->player.dir);
-		env->player.x -= VELOCITY * cos(env->player.dir);
+		env->player.pos_y -= VELOCITY * sin(env->player.dir);
+		env->player.pos_x -= VELOCITY * cos(env->player.dir);
 	}
 }

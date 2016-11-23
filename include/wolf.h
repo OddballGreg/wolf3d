@@ -28,6 +28,7 @@ typedef struct			s_player
 	double				pos_y;
 	double				dir_x;
 	double				dir_y;
+	double				dir;
 	double				plane_x;
 	double				plane_y;
 	double				v; //velocity
@@ -46,7 +47,7 @@ typedef struct			s_env
 	char				map[1024][1024];
 	int					maph;
 	int					mapw;
-	s_player			player;
+	t_player			player;
 }						t_env;
 
 /*wolf.c*/
