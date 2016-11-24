@@ -83,7 +83,6 @@ typedef struct			s_env
 	t_player			player;
     t_ray               ray;
     t_camera            camera;
-    t_map               map;
 }						t_env;
 
 /*wolf.c*/
@@ -103,6 +102,13 @@ int			key_release(int key, void *e);
 
 /*render.c*/
 void		render(t_env *e);
+void	    transform_init(t_env *env);
+void	    transform_move(t_env *env);
+void	    transform_dda(t_env *env);
+
+/*draw.c*/
+
+void    draw(t_env *env);
 void		put_pixel(t_env *env, int x, int y, unsigned int colour);
 
 #endif
