@@ -20,21 +20,21 @@ void	init(t_env *env, char *filename)
 
 	if ((fd = open(filename, O_RDONLY)) == -1)
 		ft_puterror("Cannot open file.");
-	MAPh = -1;
+	env->maph = -1;
 	while (get_next_line(fd, &line) != 0)
 	{
 		x = -1;
-		MAPh++;
+		env->maph++;
 		while (line[++x] != '\0')
 		{
-			MAP[MAPh][x] = line[x];
-			if (MAP[MAPh][x] == '*')
+			MAP[env->maph][x] = line[x];
+			if (MAP[env->maph][x] == '*')
 			{
 				PLAYER.pos_x = x;
-				PLAYER.pos_y = MAPh;
+				PLAYER.pos_y = env->maph;
 			}
-			if (MAPw < x)
-				MAPw = x;
+			if (env->mapw < x)
+				env->mapw = x;
 		}
 	}
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Wolf3D");

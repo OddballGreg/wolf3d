@@ -33,19 +33,19 @@ void	transform_init(t_env *env)
 		Calculate direction of ray relative to position of player and camera coords
 	*/
 
-	CAMERA.pos_x = 2 * x / double(WIDTH) - 1;	//x-coord of camera at FOV(x)
+	CAMERA.pos_x = 2 * PLAYER.pos_x / (double)WIDTH - 1;	//x-coord of camera at FOV(x)
 	RAY.pos_x = PLAYER.pos_x;
 	RAY.pos_y = PLAYER.pos_y;
 	RAY.dir_x = PLAYER.dir_x + PLAYER.plane_x * CAMERA.pos_x;
 	RAY.dir_y = PLAYER.dir_y + PLAYER.plane_y * CAMERA.pos_x;
 	
 	//which box of the map we're in
-	PLAYER.box_x = int(RAY.pos_x);
-	PLAYER.box_y = int(RAY.pos_y);
+	PLAYER.box_x = (int)RAY.pos_x;
+	PLAYER.box_y = (int)RAY.pos_y;
 
 	//length of ray from one x or y-side to next x or y-side
-	env->delta_dist_x = sqrt(1 + (RAY.dir_y * RAY.dir_y) / (RAY.dir_x * RAY.dir_x));
-	env->delta_dist_y = sqrt(1 + (RAY.dir_x * RAY.dir_x) / (RAY.dir_y* RAY.dir_y);
+	RAY.delta_dist_x = sqrt(1 + (RAY.dir_y * RAY.dir_y) / (RAY.dir_x * RAY.dir_x));
+	RAY.delta_dist_y = sqrt(1 + (RAY.dir_x * RAY.dir_x) / (RAY.dir_y * RAY.dir_y));
 	
 	HIT = 0; //was there a wall hit?
 }
@@ -93,7 +93,7 @@ void	transform_dda(t_env *env)
 			RAY.side = 1;
 		}
 		//Check if ray has hit a wall
-		if (env->map[PLAYER.box_x][PLAYER.box_y] > 0)
+		if (MAP[(int)PLAYER.box_x][(int)PLAYER.box_y] > 0)
 			HIT = 1;
 	}
 }
