@@ -6,13 +6,12 @@ LIBFT= -lmlx -L libft/ -lft -framework OpenGL -framework AppKit
 HEADER= -I libft -I include
 
 SP= ./srcs/
-SRC= $(SP)wolf.c\
-	 $(SP)render.c\
-	 $(SP)keyhooks.c\
-	 $(SP)datahandling.c\
-	 $(SP)game.c\
-	 $(SP)draw.c
-
+SRC= $(SP)controls.c\
+$(SP)datahandling.c\
+$(SP)draw.c\
+$(SP)raycast.c\
+$(SP)utils.c\
+$(SP)wolf.c
 
 all: $(NAME)
 

@@ -5,62 +5,61 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 15:34:19 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/23 15:35:38 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 10:35:15 by sallen            #+#    #+#             */
+/*   Updated: 2016/11/29 10:35:17 by sallen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf.h>
+#include <wolf3d.h>
 
-void	init(t_env *env, char *filename)
+void	readsize(t_env *e, int fd)
 {
-	int			fd;
-	int			x;
-	char		*line;
+	int		*size;
+	char	*line;
 
-	if ((fd = open(filename, O_RDONLY)) == -1)
-		ft_puterror("Cannot open file.");
-	env->maph = -1;
-	while (get_next_line(fd, &line) != 0)
+	if (get_next_line(fd, &line) < 1)
 	{
-		x = -1;
-		env->maph++;
-		while (line[++x] != '\0')
-		{
-			MAP[env->maph][x] = line[x];
-			if (MAP[env->maph][x] == '*')
-			{
-				PLAYER.pos_x = x;
-				PLAYER.pos_y = env->maph;
-			}
-			if (env->mapw < x)
-				env->mapw = x;
-		}
+		perror("Could not read map size!!!");
+		exit(EXIT_FAILURE);
 	}
-	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Wolf3D");
-	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
+	size = ft_strsplittoint(line, ' ');
+	e->map.sizex = size[0];
+	e->map.sizey = size[1];
 }
 
-void	set_game(t_env *env)
+void	readmap(t_env *e, int fd)
 {
-	IMGPTR = mlx_get_data_addr(env->img, &env->bpp, &env->sl, &env->endian);
-	PLAYER.pos_x = 0;
-	PLAYER.pos_y = 0;
-	PLAYER.dir_x = 0;
-	PLAYER.dir_y = 0;
-	PLAYER.plane_x = 0;
-	PLAYER.plane_y = 0;
-	PLAYER.v = 0;
-	PLAYER.t = 0;
+	char	*line;
+	int		**worldmap;
+	int		i;
+
+	i = 0;
+	worldmap = (int **)malloc(sizeof(int *) * e->map.sizex);
+	if (worldmap == NULL)
+	{
+		perror("Could not read map!!!");
+		exit(EXIT_FAILURE);
+	}
+	while (get_next_line(fd, &line) > 0)
+	{
+		worldmap[i] = ft_strsplittoint(line, ' ');
+		i++;
+	}
+	e->map.map = worldmap;
 }
 
-int		safe_exit(void *e)
+void	readfile(t_env *e, char *input)
 {
-	t_env	*env;
+	int		fd;
+	int		i;
 
-	env = (t_env *)e;
-	mlx_destroy_image(env->mlx, env->img);
-	mlx_destroy_window(env->mlx, env->win);
-	exit(0);
-	return (0);
+	i = 0;
+	if ((fd = open(input, O_RDONLY)) == -1)
+	{
+		perror("Map missing!!!");
+		exit(EXIT_FAILURE);
+	}
+	readsize(e, fd);
+	readmap(e, fd);
+	close(fd);
 }

@@ -5,36 +5,36 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 15:41:08 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/23 15:41:10 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 10:35:57 by sallen            #+#    #+#             */
+/*   Updated: 2016/11/29 10:39:30 by sallen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf.h>
+#include <wolf3d.h>
 
 int		main(int argc, char **argv)
 {
-	t_env		env;
+	t_env	e;
 
-	if (argc < 2)
-		ft_puterror("Please pass a valid mapfile as an arguement.");
-	env.mlx = mlx_init();
-	init(&env, argv[1]);
-	set_game(&env);
-	mlx_do_key_autorepeatoff(env.mlx);
-	mlx_hook(env.win, 2, 1, &key_press, (void *)&env);
-	mlx_hook(env.win, 3, 2, &key_release, (void *)&env);
-	mlx_hook(env.win, 17, 0L, safe_exit, (void *)&env);
-	mlx_loop_hook(env.mlx, run, (void *)&env);
-	mlx_loop(env.mlx);
-}
-
-int		run(void *e)
-{
-	t_env	*env;
-
-	env = (t_env *)e;
-	move(env);
-	draw(env);
+	(void)argc;
+	e.mlx = mlx_init();
+	if ((e.mlx = mlx_init()) == NULL)
+		exit(EXIT_FAILURE);
+	e.win = mlx_new_window(e.mlx, WIN_WIDTH, WIN_HEIGHT, "Wolf3d");
+	e.img.img = NULL;
+	e.player.pos.x = 4;
+	e.player.pos.y = 4;
+	e.player.dir.x = -1;
+	e.player.dir.y = 0;
+	e.r.plain.x = 0;
+	e.r.plain.y = 0.80;
+	e.time = 0;
+	e.oldtime = 0;
+	readfile(&e, argv[1]);
+	mlx_loop_hook(e.mlx, &loop_hook, &e);
+	mlx_hook(e.win, 2, (1L << 0), &key_press, &e);
+	mlx_hook(e.win, 3, (1L << 1), &key_release, &e);
+	mlx_hook(e.win, 17, 0L, ft_esc, &e);
+	mlx_loop(e.mlx);
 	return (0);
 }

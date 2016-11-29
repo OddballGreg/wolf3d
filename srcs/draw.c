@@ -5,49 +5,91 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 15:42:20 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/23 15:42:23 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 10:35:30 by sallen            #+#    #+#             */
+/*   Updated: 2016/11/29 10:35:31 by sallen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf.h>
+#include "wolf3d.h"
 
-void    draw(t_env *env)
+static void		set_colors(t_colors *c, int red, int green, int blue)
 {
-		//Calculate distance projected on camera direction (oblique distance will give fisheye effect!)
-		if (RAY.side == 0)
-            RAY.perp_wall_dist = (PLAYER.box_x - RAY.pos_x + (1 - PLAYER.step_x) / 2) / RAY.dir_x;
-		else
-            RAY.perp_wall_dist = (PLAYER.box_y - RAY.pos_y + (1 - PLAYER.step_y) / 2) / RAY.dir_y;
-
-		//Calculate height of line to draw on screen
-		RAY.line_height = (int)(HEIGHT / RAY.perp_wall_dist);
-
-		//calculate lowest and highest pixel to fill in current stripe
-		RAY.draw_start = -RAY.line_height / 2 + HEIGHT / 2;
-		if (RAY.draw_start < 0)
-            RAY.draw_start = 0;
-		RAY.draw_end = RAY.line_height / 2 + HEIGHT / 2;
-		if (RAY.draw_end >= HEIGHT)
-            RAY.draw_end = HEIGHT - 1;
+	c->red = red;
+	c->green = green;
+	c->blue = blue;
 }
 
-void	put_pixel(t_env *env, int x, int y, unsigned int colour)
+static void		mlx_image_put_pixel(void *mlx, t_img *i, t_coordint p,
+		t_colors *c)
 {
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-
-	r = (colour & 0xFF0000) >> 16;
-	g = (colour & 0x00FF00) >> 8;
-	b = (colour & 0x0000FF);
-	if (x >= 0 && x <= WIDTH && y >= 0 && y <= HEIGHT)
+	if (i->e)
 	{
-		env->imgptr[((y * WIDTH * env->bpp) >> 3)
-			+ ((env->bpp >> 3) * x)] = b;
-		env->imgptr[((y * WIDTH * env->bpp) >> 3)
-			+ ((env->bpp >> 3) * x) + 1] = g;
-		env->imgptr[((y * WIDTH * env->bpp) >> 3)
-			+ ((env->bpp >> 3) * x) + 2] = r;
+		i->d[p.y * i->s + p.x * i->bp / 8] = mlx_get_color_value(mlx, c->red);
+		i->d[p.y * i->s + p.x * i->bp / 8 + 1] =
+			mlx_get_color_value(mlx, c->green);
+		i->d[p.y * i->s + p.x * i->bp / 8 + 2] =
+			mlx_get_color_value(mlx, c->blue);
+	}
+	else
+	{
+		i->d[p.y * i->s + i->bp / 8 * p.x] = mlx_get_color_value(mlx, c->blue);
+		i->d[p.y * i->s + i->bp / 8 * p.x + 1] =
+			mlx_get_color_value(mlx, c->green);
+		i->d[p.y * i->s + i->bp / 8 * p.x + 2] =
+			mlx_get_color_value(mlx, c->red);
+	}
+}
+
+void			drawline(int x, t_env *e, t_colors *c)
+{
+	t_coordint	p;
+	t_colors	skyfloor;
+
+	p.x = x;
+	e->img.d = mlx_get_data_addr(e->img.img, &e->img.bp, &e->img.s, &e->img.e);
+	set_colors(&skyfloor, 0, 0, 204);
+	p.y = 0;
+	while (p.y < e->r.ystart)
+	{
+		mlx_image_put_pixel(e, &(e->img), p, &skyfloor);
+		p.y++;
+	}
+	p.y = e->r.ystart;
+	while (p.y < e->r.yend)
+	{
+		mlx_image_put_pixel(e, &(e->img), p, c);
+		p.y++;
+	}
+	set_colors(&skyfloor, 224, 224, 224);
+	p.y = e->r.yend;
+	while (p.y < WIN_HEIGHT)
+	{
+		mlx_image_put_pixel(e, &(e->img), p, &skyfloor);
+		p.y++;
+	}
+}
+
+void			colors(t_env *e, t_colors *c)
+{
+	int		x;
+
+	x = 0;
+	if (e->player.wallside == 0)
+	{
+		if (e->player.step.x < 0)
+			while (x < 256)
+			{
+				set_colors(c, 204, 0, 204);
+				x++;
+			}
+		else
+			set_colors(c, 0, 204, 102);
+	}
+	else
+	{
+		if (e->player.step.y < 0)
+			set_colors(c, 102, 0, 204);
+		else
+			set_colors(c, 0, 102, 204);
 	}
 }
