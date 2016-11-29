@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   wolf.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ghavenga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/29 10:49:32 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/29 10:49:34 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 13:29:42 by ghavenga          #+#    #+#             */
+/*   Updated: 2016/11/29 13:29:45 by ghavenga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,62 @@
 
 static void		initray(t_env *e, int x)
 {
-	e->player.hcamerad = 2 * x / (double)(WIN_WIDTH) - 1;
-	e->r.pos.x = e->player.pos.x;
-	e->r.pos.y = e->player.pos.y;
-	e->r.dir.x = e->player.dir.x + e->r.plain.x * e->player.hcamerad;
-	e->r.dir.y = e->player.dir.y + e->r.plain.y * e->player.hcamerad;
+	PLAYER.hcamerad = 2 * x / (double)(WIN_WIDTH) - 1;
+	e->r.pos.x = PLAYER.pos.x;
+	e->r.pos.y = PLAYER.pos.y;
+	e->r.dir.x = PLAYER.dir.x + e->r.plain.x * PLAYER.hcamerad;
+	e->r.dir.y = PLAYER.dir.y + e->r.plain.y * PLAYER.hcamerad;
 	e->r.posmap.x = (int)e->r.pos.x;
 	e->r.posmap.y = (int)e->r.pos.y;
 	e->r.disd.x = sqrt(1 + (e->r.dir.y * e->r.dir.y)
 			/ (e->r.dir.x * e->r.dir.x));
 	e->r.disd.y = sqrt(1 + (e->r.dir.x * e->r.dir.x)
 			/ (e->r.dir.y * e->r.dir.y));
-	e->player.hit = 0;
+	PLAYER.hit = 0;
 }
 
 static void		raydir(t_env *e)
 {
 	if (e->r.dir.x < 0)
 	{
-		e->player.step.x = -1;
+		PLAYER.step.x = -1;
 		e->r.sidedist.x = (e->r.pos.x - e->r.posmap.x) * e->r.disd.x;
 	}
 	else
 	{
-		e->player.step.x = 1;
+		PLAYER.step.x = 1;
 		e->r.sidedist.x = (e->r.posmap.x + 1.0 - e->r.pos.x) * e->r.disd.x;
 	}
 	if (e->r.dir.y < 0)
 	{
-		e->player.step.y = -1;
+		PLAYER.step.y = -1;
 		e->r.sidedist.y = (e->r.pos.y - e->r.posmap.y) * e->r.disd.y;
 	}
 	else
 	{
-		e->player.step.y = 1;
+		PLAYER.step.y = 1;
 		e->r.sidedist.y = (e->r.posmap.y + 1.0 - e->r.pos.y) * e->r.disd.y;
 	}
 }
 
 static void		dda(t_env *e)
 {
-	while (e->player.hit == 0)
+	while (PLAYER.hit == 0)
 	{
 		if (e->r.sidedist.x < e->r.sidedist.y)
 		{
 			e->r.sidedist.x += e->r.disd.x;
-			e->r.posmap.x += e->player.step.x;
-			e->player.wallside = 0;
+			e->r.posmap.x += PLAYER.step.x;
+			PLAYER.wallside = 0;
 		}
 		else
 		{
 			e->r.sidedist.y += e->r.disd.y;
-			e->r.posmap.y += e->player.step.y;
-			e->player.wallside = 1;
+			e->r.posmap.y += PLAYER.step.y;
+			PLAYER.wallside = 1;
 		}
-		if (e->map.map[(int)e->r.posmap.x][(int)e->r.posmap.y] > 0)
-			e->player.hit = 1;
+		if (MAP.map[(int)e->r.posmap.x][(int)e->r.posmap.y] > 0)
+			PLAYER.hit = 1;
 	}
 }
 
@@ -77,12 +77,12 @@ static void		compute(t_env *e)
 {
 	double	distwall;
 
-	if (e->player.wallside == 0)
+	if (PLAYER.wallside == 0)
 		distwall = fabs((e->r.posmap.x - e->r.pos.x
-					+ (1 - e->player.step.x) / 2) / e->r.dir.x);
+					+ (1 - PLAYER.step.x) / 2) / e->r.dir.x);
 	else
 		distwall = fabs((e->r.posmap.y - e->r.pos.y
-				+ (1 - e->player.step.y) / 2) / e->r.dir.y);
+				+ (1 - PLAYER.step.y) / 2) / e->r.dir.y);
 	e->r.lheight = abs((int)(WIN_HEIGHT / distwall));
 	e->r.ystart = (-1 * (e->r.lheight)) / 2 + WIN_HEIGHT / 2;
 	if (e->r.ystart < 0)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   datahandling.c                                     :+:      :+:    :+:   */
+/*   wolf.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ghavenga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/29 10:35:15 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/29 10:35:17 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 13:29:42 by ghavenga          #+#    #+#             */
+/*   Updated: 2016/11/29 13:29:45 by ghavenga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ void	readsize(t_env *e, int fd)
 		exit(EXIT_FAILURE);
 	}
 	size = ft_strsplittoint(line, ' ');
-	e->map.sizex = size[0];
-	e->map.sizey = size[1];
+	MAP.sizex = size[0];
+	MAP.sizey = size[1];
+	free(size);
+	free(line);
 }
 
 void	readmap(t_env *e, int fd)
@@ -34,7 +36,7 @@ void	readmap(t_env *e, int fd)
 	int		i;
 
 	i = 0;
-	worldmap = (int **)malloc(sizeof(int *) * e->map.sizex);
+	worldmap = (int **)malloc(sizeof(int *) * MAP.sizex);
 	if (worldmap == NULL)
 	{
 		perror("Could not read map!!!");
@@ -44,8 +46,9 @@ void	readmap(t_env *e, int fd)
 	{
 		worldmap[i] = ft_strsplittoint(line, ' ');
 		i++;
+		free(line);
 	}
-	e->map.map = worldmap;
+	MAP.map = worldmap;
 }
 
 void	readfile(t_env *e, char *input)

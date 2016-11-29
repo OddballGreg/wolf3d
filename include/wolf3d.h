@@ -4,6 +4,24 @@
 # define WIN_WIDTH	1280
 # define WIN_HEIGHT	720
 
+# define K_UP 126
+# define K_DOWN 125
+# define K_LEFT 123
+# define K_RIGHT 124
+# define K_NUP 91
+# define K_NDOWN 84
+# define K_NLEFT 86
+# define K_NRIGHT 88
+# define K_ESC 53
+# define PLAYER e->player
+# define MAP e->map
+# define RAY e->r
+# define FORWARD (keycode == K_UP || keycode == K_NUP)
+# define BACK (keycode == K_DOWN || keycode == K_NDOWN)
+# define LEFT (keycode == K_LEFT || keycode == K_NLEFT)
+# define RIGHT (keycode == K_RIGHT || keycode == K_NRIGHT)
+# define EXIT (keycode == K_ESC)
+
 # include <mlx.h>
 # include <math.h>
 # include <unistd.h>

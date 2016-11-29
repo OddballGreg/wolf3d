@@ -43,7 +43,7 @@ fclean: clean
 re: fclean all
 
 me:
-	@echo "sallen\nbsaunders\nghavenga\noexall" > author
+	@echo "ghavenga\n" > author
 
 norm:
 	@clear

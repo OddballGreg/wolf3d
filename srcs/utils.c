@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   wolf.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ghavenga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/29 10:35:47 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/29 10:35:49 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 13:29:42 by ghavenga          #+#    #+#             */
+/*   Updated: 2016/11/29 13:29:45 by ghavenga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	get_timeframe(t_env *e)
 	gettimeofday(&time, NULL);
 	e->time = time.tv_sec * 1000 + time.tv_usec / 1000;
 	e->frametime = e->time - e->oldtime;
-	e->player.mspeed = e->frametime * 0.003;
-	e->player.rspeed = e->frametime * 0.005;
+	PLAYER.mspeed = e->frametime * 0.003;
+	PLAYER.rspeed = e->frametime * 0.005;
 }
 
 int		size_word(char *s, char c)

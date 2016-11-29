@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   controls.c                                         :+:      :+:    :+:   */
+/*   wolf.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ghavenga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/29 10:35:06 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/29 10:35:08 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 13:29:42 by ghavenga          #+#    #+#             */
+/*   Updated: 2016/11/29 13:29:45 by ghavenga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 
 int			key_press(int keycode, t_env *e)
 {
-	if (keycode == 123 || keycode == 86)
-		e->player.move.left = 1;
-	if (keycode == 126 || keycode == 91)
-		e->player.move.up = 1;
-	if (keycode == 124 || keycode == 88)
-		e->player.move.right = 1;
-	if (keycode == 125 || keycode == 84)
-		e->player.move.down = 1;
+	if LEFT
+		PLAYER.move.left = 1;
+	if FORWARD
+		PLAYER.move.up = 1;
+	if RIGHT
+		PLAYER.move.right = 1;
+	if BACK
+		PLAYER.move.down = 1;
 	return (0);
 }
 
 int			key_release(int keycode, t_env *e)
 {
-	if (keycode == 53)
+	if EXIT
 	{
 		mlx_destroy_window(e->mlx, e->win);
 		exit(EXIT_SUCCESS);
 	}
-	if (keycode == 123 || keycode == 86)
-		e->player.move.left = 0;
-	if (keycode == 126 || keycode == 91)
-		e->player.move.up = 0;
-	if (keycode == 124 || keycode == 88)
-		e->player.move.right = 0;
-	if (keycode == 125 || keycode == 84)
-		e->player.move.down = 0;
+	if LEFT
+		PLAYER.move.left = 0;
+	if FORWARD
+		PLAYER.move.up = 0;
+	if RIGHT
+		PLAYER.move.right = 0;
+	if BACK
+		PLAYER.move.down = 0;
 	return (0);
 }
 
@@ -50,42 +50,42 @@ static void	turn(t_env *e, char dir)
 	int		coef;
 
 	coef = 1;
-	tmpdir = e->player.dir.x;
+	tmpdir = PLAYER.dir.x;
 	tmpplain = e->r.plain.x;
 	if (dir == '1')
 		coef = -1;
-	e->player.dir.x = e->player.dir.x * cos(coef * e->player.rspeed)
-		- e->player.dir.y * sin(coef * e->player.rspeed);
-	e->player.dir.y = tmpdir * sin(coef * e->player.rspeed) + e->player.dir.y
-		* cos(coef * e->player.rspeed);
-	e->r.plain.x = e->r.plain.x * cos(coef * e->player.rspeed)
-		- e->r.plain.y * sin(coef * e->player.rspeed);
-	e->r.plain.y = tmpplain * sin(coef * e->player.rspeed)
-		+ e->r.plain.y * cos(coef * e->player.rspeed);
+	PLAYER.dir.x = PLAYER.dir.x * cos(coef * PLAYER.rspeed)
+		- PLAYER.dir.y * sin(coef * PLAYER.rspeed);
+	PLAYER.dir.y = tmpdir * sin(coef * PLAYER.rspeed) + PLAYER.dir.y
+		* cos(coef * PLAYER.rspeed);
+	e->r.plain.x = e->r.plain.x * cos(coef * PLAYER.rspeed)
+		- e->r.plain.y * sin(coef * PLAYER.rspeed);
+	e->r.plain.y = tmpplain * sin(coef * PLAYER.rspeed)
+		+ e->r.plain.y * cos(coef * PLAYER.rspeed);
 }
 
 void		move(t_env *e)
 {
-	if (e->player.move.up)
+	if (PLAYER.move.up)
 	{
-		if (!(e->map.map[(int)(e->player.pos.x + e->player.dir.x
-						* e->player.mspeed)][(int)(e->player.pos.y)]))
-			e->player.pos.x += e->player.dir.x * e->player.mspeed;
-		if (!(e->map.map[(int)(e->player.pos.x)][(int)(e->player.pos.y
-						+ e->player.dir.y * e->player.mspeed)]))
-			e->player.pos.y += e->player.dir.y * e->player.mspeed;
+		if (!(MAP.map[(int)(PLAYER.pos.x + PLAYER.dir.x
+						* PLAYER.mspeed)][(int)(PLAYER.pos.y)]))
+			PLAYER.pos.x += PLAYER.dir.x * PLAYER.mspeed;
+		if (!(MAP.map[(int)(PLAYER.pos.x)][(int)(PLAYER.pos.y
+						+ PLAYER.dir.y * PLAYER.mspeed)]))
+			PLAYER.pos.y += PLAYER.dir.y * PLAYER.mspeed;
 	}
-	if (e->player.move.left)
+	if (PLAYER.move.left)
 		turn(e, '0');
-	if (e->player.move.right)
+	if (PLAYER.move.right)
 		turn(e, '1');
-	if (e->player.move.down)
+	if (PLAYER.move.down)
 	{
-		if (!(e->map.map[(int)(e->player.pos.x - e->player.dir.x *
-						e->player.mspeed)][(int)(e->player.pos.y)]))
-			e->player.pos.x -= e->player.dir.x * e->player.mspeed;
-		if (!(e->map.map[(int)(e->player.pos.x)][(int)(e->player.pos.y -
-						e->player.dir.y * e->player.mspeed)]))
-			e->player.pos.y -= e->player.dir.y * e->player.mspeed;
+		if (!(MAP.map[(int)(PLAYER.pos.x - PLAYER.dir.x *
+						PLAYER.mspeed)][(int)(PLAYER.pos.y)]))
+			PLAYER.pos.x -= PLAYER.dir.x * PLAYER.mspeed;
+		if (!(MAP.map[(int)(PLAYER.pos.x)][(int)(PLAYER.pos.y -
+						PLAYER.dir.y * PLAYER.mspeed)]))
+			PLAYER.pos.y -= PLAYER.dir.y * PLAYER.mspeed;
 	}
 }

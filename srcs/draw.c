@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   wolf.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sallen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ghavenga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/29 10:35:30 by sallen            #+#    #+#             */
-/*   Updated: 2016/11/29 10:35:31 by sallen           ###   ########.fr       */
+/*   Created: 2016/11/29 13:29:42 by ghavenga          #+#    #+#             */
+/*   Updated: 2016/11/29 13:29:45 by ghavenga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void			colors(t_env *e, t_colors *c)
 	int		x;
 
 	x = 0;
-	if (e->player.wallside == 0)
+	if (PLAYER.wallside == 0)
 	{
-		if (e->player.step.x < 0)
+		if (PLAYER.step.x < 0)
 			while (x < 256)
 			{
 				set_colors(c, 204, 0, 204);
@@ -87,7 +87,7 @@ void			colors(t_env *e, t_colors *c)
 	}
 	else
 	{
-		if (e->player.step.y < 0)
+		if (PLAYER.step.y < 0)
 			set_colors(c, 102, 0, 204);
 		else
 			set_colors(c, 0, 102, 204);
