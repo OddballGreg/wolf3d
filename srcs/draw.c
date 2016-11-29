@@ -49,19 +49,19 @@ void			drawline(int x, t_env *e, t_colors *c)
 	e->img.d = mlx_get_data_addr(e->img.img, &e->img.bp, &e->img.s, &e->img.e);
 	set_colors(&skyfloor, 0, 0, 204);
 	p.y = 0;
-	while (p.y < e->r.ystart)
+	while (p.y < RAY.ystart)
 	{
 		mlx_image_put_pixel(e, &(e->img), p, &skyfloor);
 		p.y++;
 	}
-	p.y = e->r.ystart;
-	while (p.y < e->r.yend)
+	p.y = RAY.ystart;
+	while (p.y < RAY.yend)
 	{
 		mlx_image_put_pixel(e, &(e->img), p, c);
 		p.y++;
 	}
 	set_colors(&skyfloor, 224, 224, 224);
-	p.y = e->r.yend;
+	p.y = RAY.yend;
 	while (p.y < WIN_HEIGHT)
 	{
 		mlx_image_put_pixel(e, &(e->img), p, &skyfloor);

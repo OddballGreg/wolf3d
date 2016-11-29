@@ -51,17 +51,17 @@ static void	turn(t_env *e, char dir)
 
 	coef = 1;
 	tmpdir = PLAYER.dir.x;
-	tmpplain = e->r.plain.x;
+	tmpplain = RAY.plain.x;
 	if (dir == '1')
 		coef = -1;
 	PLAYER.dir.x = PLAYER.dir.x * cos(coef * PLAYER.rspeed)
 		- PLAYER.dir.y * sin(coef * PLAYER.rspeed);
 	PLAYER.dir.y = tmpdir * sin(coef * PLAYER.rspeed) + PLAYER.dir.y
 		* cos(coef * PLAYER.rspeed);
-	e->r.plain.x = e->r.plain.x * cos(coef * PLAYER.rspeed)
-		- e->r.plain.y * sin(coef * PLAYER.rspeed);
-	e->r.plain.y = tmpplain * sin(coef * PLAYER.rspeed)
-		+ e->r.plain.y * cos(coef * PLAYER.rspeed);
+	RAY.plain.x = RAY.plain.x * cos(coef * PLAYER.rspeed)
+		- RAY.plain.y * sin(coef * PLAYER.rspeed);
+	RAY.plain.y = tmpplain * sin(coef * PLAYER.rspeed)
+		+ RAY.plain.y * cos(coef * PLAYER.rspeed);
 }
 
 void		move(t_env *e)
